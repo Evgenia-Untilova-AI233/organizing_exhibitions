@@ -45,4 +45,5 @@ public class ExhibitionService {
     public List<Exhibition> getExhibitionsByLocation(Long locationId) {
         return exhibitionRepository.findByLocationId(locationId);
     }
+
 }

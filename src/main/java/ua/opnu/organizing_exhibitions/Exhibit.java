@@ -11,6 +11,7 @@ public class Exhibit {
 
     private String name;
     private String description;
+    private int creationYear;
 
     @ManyToOne
     @JoinColumn(name = "artist_id", referencedColumnName = "id")
@@ -68,5 +69,15 @@ public class Exhibit {
     // Сеттер для exhibition
     public void setExhibition(Exhibition exhibition) {
         this.exhibition = exhibition;
+
+    }
+    // Геттер для creationYear
+    public int getCreationYear() {
+        return creationYear;
+    }
+
+    // Сеттер для creationYear
+    public void setCreationYear(int creationYear) {
+        this.creationYear = creationYear;
     }
 }

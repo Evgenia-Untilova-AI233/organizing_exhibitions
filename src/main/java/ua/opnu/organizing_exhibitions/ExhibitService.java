@@ -49,4 +49,17 @@ public class ExhibitService {
     public List<Exhibit> getExhibitsByExhibition(Long exhibitionId) {
         return exhibitRepository.findByExhibitionId(exhibitionId);
     }
+    // Метод для пошуку експонатів, створених після певного року
+    public List<Exhibit> getExhibitsCreatedAfterYear(int year) {
+        return exhibitRepository.findByCreationYearGreaterThan(year);
+    }
+
+    // Метод для пошуку експонатів, які не брали участі у жодній виставці
+    public List<Exhibit> getExhibitsNotInExhibition() {
+        return exhibitRepository.findByExhibitionIsNull();
+    }
+    // Отримати статистику — кількість виставок для кожного митця
+    public List<Object[]> getExhibitionStatistics() {
+        return exhibitRepository.countExhibitionsByArtist();
+    }
 }

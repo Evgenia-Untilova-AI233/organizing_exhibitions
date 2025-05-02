@@ -13,46 +13,19 @@ public class Location {
     private String name;
     private String address;
 
-    @OneToMany(mappedBy = "location")
-    private List<Exhibition> exhibitions; // Відношення до виставок
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Exhibition> exhibitions;
 
-    // Геттер для id
-    public Long getId() {
-        return id;
-    }
+    // Getters and setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    // Сеттер для id
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    // Геттер для name
-    public String getName() {
-        return name;
-    }
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
 
-    // Сеттер для name
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    // Геттер для address
-    public String getAddress() {
-        return address;
-    }
-
-    // Сеттер для address
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    // Геттер для exhibitions
-    public List<Exhibition> getExhibitions() {
-        return exhibitions;
-    }
-
-    // Сеттер для exhibitions
-    public void setExhibitions(List<Exhibition> exhibitions) {
-        this.exhibitions = exhibitions;
-    }
+    public List<Exhibition> getExhibitions() { return exhibitions; }
+    public void setExhibitions(List<Exhibition> exhibitions) { this.exhibitions = exhibitions; }
 }

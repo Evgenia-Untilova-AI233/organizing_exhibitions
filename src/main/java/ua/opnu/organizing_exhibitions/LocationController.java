@@ -18,30 +18,31 @@ public class LocationController {
 
     @PostMapping
     public ResponseEntity<Location> addLocation(@RequestBody Location location) {
-        Location savedLocation = locationService.addLocation(location);
-        return new ResponseEntity<>(savedLocation, HttpStatus.CREATED);
+        return new ResponseEntity<>(locationService.addLocation(location), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<Location>> getAllLocations() {
-        List<Location> locations = locationService.getAllLocations();
-        return new ResponseEntity<>(locations, HttpStatus.OK);
+        return new ResponseEntity<>(locationService.getAllLocations(), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Location> updateLocation(@PathVariable Long id, @RequestBody Location location) {
-        Location updatedLocation = locationService.updateLocation(id, location);
-        return updatedLocation != null ?
-                new ResponseEntity<>(updatedLocation, HttpStatus.OK) :
-                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Location updated = locationService.updateLocation(id, location);
+        return updated != null
+                ? new ResponseEntity<>(updated, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteLocation(@PathVariable Long id) {
-        if (locationService.deleteLocation(id)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return locationService.deleteLocation(id)
+                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/top3")
+    public ResponseEntity<List<Location>> getTop3Locations() {
+        return new ResponseEntity<>(locationService.getTop3LocationsByExhibitions(), HttpStatus.OK);
     }
 }

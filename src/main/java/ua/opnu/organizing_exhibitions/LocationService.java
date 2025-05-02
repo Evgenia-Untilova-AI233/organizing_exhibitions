@@ -25,13 +25,11 @@ public class LocationService {
     }
 
     public Location updateLocation(Long id, Location location) {
-        Optional<Location> existingLocation = locationRepository.findById(id);
-        if (existingLocation.isPresent()) {
+        if (locationRepository.existsById(id)) {
             location.setId(id);
             return locationRepository.save(location);
-        } else {
-            return null;
         }
+        return null;
     }
 
     public boolean deleteLocation(Long id) {
@@ -40,5 +38,10 @@ public class LocationService {
             return true;
         }
         return false;
+    }
+
+    public List<Location> getTop3LocationsByExhibitions() {
+        return locationRepository.findTopLocationsByExhibitions()
+                .stream().limit(3).toList(); // обмеження до топ-3
     }
 }

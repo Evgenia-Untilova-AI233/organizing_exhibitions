@@ -56,4 +56,22 @@ public class ExhibitController {
         List<Exhibit> exhibits = exhibitService.getExhibitsByExhibition(exhibitionId);
         return new ResponseEntity<>(exhibits, HttpStatus.OK);
     }
+    // Метод для отримання експонатів, створених після певного року
+    @GetMapping("/createdAfter/{year}")
+    public ResponseEntity<List<Exhibit>> getExhibitsCreatedAfterYear(@PathVariable int year) {
+        List<Exhibit> exhibits = exhibitService.getExhibitsCreatedAfterYear(year);
+        return new ResponseEntity<>(exhibits, HttpStatus.OK);
+    }
+
+    // Метод для отримання експонатів, які не брали участі у жодній виставці
+    @GetMapping("/notInExhibition")
+    public ResponseEntity<List<Exhibit>> getExhibitsNotInExhibition() {
+        List<Exhibit> exhibits = exhibitService.getExhibitsNotInExhibition();
+        return new ResponseEntity<>(exhibits, HttpStatus.OK);
+    }
+    @GetMapping("/statistics")
+    public ResponseEntity<List<Object[]>> getExhibitionStatistics() {
+        List<Object[]> statistics = exhibitService.getExhibitionStatistics();
+        return new ResponseEntity<>(statistics, HttpStatus.OK);
+    }
 }
