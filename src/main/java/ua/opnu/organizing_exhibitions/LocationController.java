@@ -1,7 +1,6 @@
 package ua.opnu.organizing_exhibitions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +11,7 @@ public class LocationController {
 
     private final LocationService locationService;
 
+    // Використання Constructor Injection
     public LocationController(LocationService locationService) {
         this.locationService = locationService;
     }
@@ -23,26 +23,22 @@ public class LocationController {
 
     @GetMapping
     public ResponseEntity<List<Location>> getAllLocations() {
-        return new ResponseEntity<>(locationService.getAllLocations(), HttpStatus.OK);
+        return ResponseEntity.ok(locationService.getAllLocations());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Location> updateLocation(@PathVariable Long id, @RequestBody Location location) {
-        Location updated = locationService.updateLocation(id, location);
-        return updated != null
-                ? new ResponseEntity<>(updated, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(locationService.updateLocation(id, location));
+    }
+
+    @GetMapping("/top3")
+    public ResponseEntity<List<Location>> getTop3ByExhibitions() {
+        return ResponseEntity.ok(locationService.getTop3LocationsByExhibitions());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteLocation(@PathVariable Long id) {
-        return locationService.deleteLocation(id)
-                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @GetMapping("/top3")
-    public ResponseEntity<List<Location>> getTop3Locations() {
-        return new ResponseEntity<>(locationService.getTop3LocationsByExhibitions(), HttpStatus.OK);
+        locationService.deleteLocation(id);
+        return ResponseEntity.noContent().build();
     }
 }

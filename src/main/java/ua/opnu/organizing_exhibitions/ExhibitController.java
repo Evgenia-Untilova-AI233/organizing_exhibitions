@@ -1,7 +1,6 @@
 package ua.opnu.organizing_exhibitions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,66 +11,44 @@ public class ExhibitController {
 
     private final ExhibitService exhibitService;
 
+    // Ін’єкція залежності через конструктор
     public ExhibitController(ExhibitService exhibitService) {
         this.exhibitService = exhibitService;
     }
 
     @PostMapping
     public ResponseEntity<Exhibit> addExhibit(@RequestBody Exhibit exhibit) {
-        Exhibit savedExhibit = exhibitService.addExhibit(exhibit);
-        return new ResponseEntity<>(savedExhibit, HttpStatus.CREATED);
+        return new ResponseEntity<>(exhibitService.addExhibit(exhibit), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<Exhibit>> getAllExhibits() {
-        List<Exhibit> exhibits = exhibitService.getAllExhibits();
-        return new ResponseEntity<>(exhibits, HttpStatus.OK);
+        return ResponseEntity.ok(exhibitService.getAllExhibits());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Exhibit> updateExhibit(@PathVariable Long id, @RequestBody Exhibit exhibit) {
-        Exhibit updatedExhibit = exhibitService.updateExhibit(id, exhibit);
-        return updatedExhibit != null ?
-                new ResponseEntity<>(updatedExhibit, HttpStatus.OK) :
-                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(exhibitService.updateExhibit(id, exhibit));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteExhibit(@PathVariable Long id) {
-        if (exhibitService.deleteExhibit(id)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        exhibitService.deleteExhibit(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/artist/{artistId}")
     public ResponseEntity<List<Exhibit>> getExhibitsByArtist(@PathVariable Long artistId) {
-        List<Exhibit> exhibits = exhibitService.getExhibitsByArtist(artistId);
-        return new ResponseEntity<>(exhibits, HttpStatus.OK);
+        return ResponseEntity.ok(exhibitService.getExhibitsByArtist(artistId));
     }
 
-    @GetMapping("/exhibition/{exhibitionId}")
-    public ResponseEntity<List<Exhibit>> getExhibitsByExhibition(@PathVariable Long exhibitionId) {
-        List<Exhibit> exhibits = exhibitService.getExhibitsByExhibition(exhibitionId);
-        return new ResponseEntity<>(exhibits, HttpStatus.OK);
-    }
-    // Метод для отримання експонатів, створених після певного року
     @GetMapping("/createdAfter/{year}")
-    public ResponseEntity<List<Exhibit>> getExhibitsCreatedAfterYear(@PathVariable int year) {
-        List<Exhibit> exhibits = exhibitService.getExhibitsCreatedAfterYear(year);
-        return new ResponseEntity<>(exhibits, HttpStatus.OK);
+    public ResponseEntity<List<Exhibit>> getExhibitsCreatedAfter(@PathVariable int year) {
+        return ResponseEntity.ok(exhibitService.getExhibitsCreatedAfterYear(year));
     }
 
-    // Метод для отримання експонатів, які не брали участі у жодній виставці
     @GetMapping("/notInExhibition")
     public ResponseEntity<List<Exhibit>> getExhibitsNotInExhibition() {
-        List<Exhibit> exhibits = exhibitService.getExhibitsNotInExhibition();
-        return new ResponseEntity<>(exhibits, HttpStatus.OK);
-    }
-    @GetMapping("/statistics")
-    public ResponseEntity<List<Object[]>> getExhibitionStatistics() {
-        List<Object[]> statistics = exhibitService.getExhibitionStatistics();
-        return new ResponseEntity<>(statistics, HttpStatus.OK);
+        return ResponseEntity.ok(exhibitService.getExhibitsNotInExhibition());
     }
 }

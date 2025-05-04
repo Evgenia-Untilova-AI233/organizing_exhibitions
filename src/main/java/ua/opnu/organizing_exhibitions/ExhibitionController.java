@@ -1,7 +1,6 @@
 package ua.opnu.organizing_exhibitions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,42 +11,39 @@ public class ExhibitionController {
 
     private final ExhibitionService exhibitionService;
 
+    // Ін’єкція залежності через конструктор
     public ExhibitionController(ExhibitionService exhibitionService) {
         this.exhibitionService = exhibitionService;
     }
 
     @PostMapping
     public ResponseEntity<Exhibition> addExhibition(@RequestBody Exhibition exhibition) {
-        Exhibition savedExhibition = exhibitionService.addExhibition(exhibition);
-        return new ResponseEntity<>(savedExhibition, HttpStatus.CREATED);
+        return new ResponseEntity<>(exhibitionService.addExhibition(exhibition), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<Exhibition>> getAllExhibitions() {
-        List<Exhibition> exhibitions = exhibitionService.getAllExhibitions();
-        return new ResponseEntity<>(exhibitions, HttpStatus.OK);
+        return ResponseEntity.ok(exhibitionService.getAllExhibitions());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Exhibition> updateExhibition(@PathVariable Long id, @RequestBody Exhibition exhibition) {
-        Exhibition updatedExhibition = exhibitionService.updateExhibition(id, exhibition);
-        return updatedExhibition != null ?
-                new ResponseEntity<>(updatedExhibition, HttpStatus.OK) :
-                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(exhibitionService.updateExhibition(id, exhibition));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteExhibition(@PathVariable Long id) {
-        if (exhibitionService.deleteExhibition(id)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        exhibitionService.deleteExhibition(id);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/location/{locationId}")
-    public ResponseEntity<List<Exhibition>> getExhibitionsByLocation(@PathVariable Long locationId) {
-        List<Exhibition> exhibitions = exhibitionService.getExhibitionsByLocation(locationId);
-        return new ResponseEntity<>(exhibitions, HttpStatus.OK);
+    @GetMapping("/current")
+    public ResponseEntity<List<Exhibition>> getCurrentExhibitions() {
+        return ResponseEntity.ok(exhibitionService.getCurrentExhibitions());
+    }
+
+    @GetMapping("/artist/{artistId}")
+    public ResponseEntity<List<Exhibition>> getExhibitionsByArtist(@PathVariable Long artistId) {
+        return ResponseEntity.ok(exhibitionService.getExhibitionsByArtist(artistId));
     }
 }

@@ -10,74 +10,39 @@ public class Exhibit {
     private Long id;
 
     private String name;
+
     private String description;
+
     private int creationYear;
 
     @ManyToOne
-    @JoinColumn(name = "artist_id", referencedColumnName = "id")
-    private Artist artist;  // Відношення з митцем
+    private Artist artist;
 
     @ManyToOne
-    @JoinColumn(name = "exhibition_id", referencedColumnName = "id")
-    private Exhibition exhibition; // Відношення з виставкою
+    private Exhibition exhibition;
 
-    // Геттер для id
-    public Long getId() {
-        return id;
-    }
+    // Геттери та Сеттери
+    public Long getId() { return id; }
 
-    // Сеттер для id
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
-    // Геттер для name
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
-    // Сеттер для name
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
-    // Геттер для description
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() { return description; }
 
-    // Сеттер для description
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public void setDescription(String description) { this.description = description; }
 
-    // Геттер для artist
-    public Artist getArtist() {
-        return artist;
-    }
+    public int getCreationYear() { return creationYear; }
 
-    // Сеттер для artist
-    public void setArtist(Artist artist) {
-        this.artist = artist;
-    }
+    public void setCreationYear(int creationYear) { this.creationYear = creationYear; }
 
-    // Геттер для exhibition
-    public Exhibition getExhibition() {
-        return exhibition;
-    }
+    public Artist getArtist() { return artist; }
 
-    // Сеттер для exhibition
-    public void setExhibition(Exhibition exhibition) {
-        this.exhibition = exhibition;
+    public void setArtist(Artist artist) { this.artist = artist; }
 
-    }
-    // Геттер для creationYear
-    public int getCreationYear() {
-        return creationYear;
-    }
+    public Exhibition getExhibition() { return exhibition; }
 
-    // Сеттер для creationYear
-    public void setCreationYear(int creationYear) {
-        this.creationYear = creationYear;
-    }
+    public void setExhibition(Exhibition exhibition) { this.exhibition = exhibition; }
 }

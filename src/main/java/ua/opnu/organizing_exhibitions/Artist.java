@@ -1,6 +1,7 @@
 package ua.opnu.organizing_exhibitions;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class Artist {
@@ -10,35 +11,26 @@ public class Artist {
     private Long id;
 
     private String name;
+
     private String country;
 
-    // Геттер для id
-    public Long getId() {
-        return id;
-    }
+    @OneToMany(mappedBy = "artist")
+    private List<Exhibit> exhibits;
 
-    // Сеттер для id
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // Геттери та Сеттери
+    public Long getId() { return id; }
 
-    // Геттер для name
-    public String getName() {
-        return name;
-    }
+    public void setId(Long id) { this.id = id; }
 
-    // Сеттер для name
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getName() { return name; }
 
-    // Геттер для country
-    public String getCountry() {
-        return country;
-    }
+    public void setName(String name) { this.name = name; }
 
-    // Сеттер для country
-    public void setCountry(String country) {
-        this.country = country;
-    }
+    public String getCountry() { return country; }
+
+    public void setCountry(String country) { this.country = country; }
+
+    public List<Exhibit> getExhibits() { return exhibits; }
+
+    public void setExhibits(List<Exhibit> exhibits) { this.exhibits = exhibits; }
 }

@@ -1,17 +1,15 @@
 package ua.opnu.organizing_exhibitions;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LocationService {
 
     private final LocationRepository locationRepository;
 
-    @Autowired
+    // Ін’єкція залежності через конструктор
     public LocationService(LocationRepository locationRepository) {
         this.locationRepository = locationRepository;
     }
@@ -24,24 +22,18 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
-    public Location updateLocation(Long id, Location location) {
-        if (locationRepository.existsById(id)) {
-            location.setId(id);
-            return locationRepository.save(location);
-        }
-        return null;
+    public Location updateLocation(Long id, Location updatedLocation) {
+        Location location = locationRepository.findById(id).orElseThrow();
+        location.setName(updatedLocation.getName());
+        location.setCity(updatedLocation.getCity());
+        return locationRepository.save(location);
     }
 
-    public boolean deleteLocation(Long id) {
-        if (locationRepository.existsById(id)) {
-            locationRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteLocation(Long id) {
+        locationRepository.deleteById(id);
     }
 
     public List<Location> getTop3LocationsByExhibitions() {
-        return locationRepository.findTopLocationsByExhibitions()
-                .stream().limit(3).toList(); // обмеження до топ-3
+        return locationRepository.findTop3ByOrderByExhibitionsCountDesc();
     }
 }

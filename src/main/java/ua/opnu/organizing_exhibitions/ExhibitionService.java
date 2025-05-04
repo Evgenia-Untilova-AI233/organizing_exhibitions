@@ -1,17 +1,15 @@
 package ua.opnu.organizing_exhibitions;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ExhibitionService {
 
     private final ExhibitionRepository exhibitionRepository;
 
-    @Autowired
     public ExhibitionService(ExhibitionRepository exhibitionRepository) {
         this.exhibitionRepository = exhibitionRepository;
     }
@@ -24,26 +22,25 @@ public class ExhibitionService {
         return exhibitionRepository.findAll();
     }
 
-    public Exhibition updateExhibition(Long id, Exhibition exhibition) {
-        Optional<Exhibition> existingExhibition = exhibitionRepository.findById(id);
-        if (existingExhibition.isPresent()) {
-            exhibition.setId(id);
-            return exhibitionRepository.save(exhibition);
-        } else {
-            return null;
-        }
+    public Exhibition updateExhibition(Long id, Exhibition updatedExhibition) {
+        Exhibition exhibition = exhibitionRepository.findById(id).orElseThrow();
+        exhibition.setTitle(updatedExhibition.getTitle());
+        exhibition.setStartDate(updatedExhibition.getStartDate());
+        exhibition.setEndDate(updatedExhibition.getEndDate());
+        exhibition.setLocation(updatedExhibition.getLocation());
+        return exhibitionRepository.save(exhibition);
     }
 
-    public boolean deleteExhibition(Long id) {
-        if (exhibitionRepository.existsById(id)) {
-            exhibitionRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteExhibition(Long id) {
+        exhibitionRepository.deleteById(id);
     }
 
-    public List<Exhibition> getExhibitionsByLocation(Long locationId) {
-        return exhibitionRepository.findByLocationId(locationId);
+    public List<Exhibition> getCurrentExhibitions() {
+        LocalDate now = LocalDate.now();
+        return exhibitionRepository.findByStartDateBeforeAndEndDateAfter(now, now);
     }
 
+    public List<Exhibition> getExhibitionsByArtist(Long artistId) {
+        return exhibitionRepository.findDistinctByExhibitsArtistId(artistId);
+    }
 }

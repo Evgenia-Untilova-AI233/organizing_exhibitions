@@ -1,6 +1,7 @@
 package ua.opnu.organizing_exhibitions;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -10,63 +11,40 @@ public class Exhibition {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String description;
+    private String title;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     @ManyToOne
-    @JoinColumn(name = "location_id", referencedColumnName = "id")
-    private Location location;  // Відношення з місцем
+    private Location location;
 
-    @OneToMany(mappedBy = "exhibition")
-    private List<Exhibit> exhibits; // Відношення до експонатів
+    @OneToMany(mappedBy = "exhibition", cascade = CascadeType.ALL)
+    private List<Exhibit> exhibits;
 
-    // Геттер для id
-    public Long getId() {
-        return id;
-    }
+    // Геттери та Сеттери
+    public Long getId() { return id; }
 
-    // Сеттер для id
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
-    // Геттер для name
-    public String getName() {
-        return name;
-    }
+    public String getTitle() { return title; }
 
-    // Сеттер для name
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setTitle(String title) { this.title = title; }
 
-    // Геттер для description
-    public String getDescription() {
-        return description;
-    }
+    public LocalDate getStartDate() { return startDate; }
 
-    // Сеттер для description
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
 
-    // Геттер для location
-    public Location getLocation() {
-        return location;
-    }
+    public LocalDate getEndDate() { return endDate; }
 
-    // Сеттер для location
-    public void setLocation(Location location) {
-        this.location = location;
-    }
+    public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
 
-    // Геттер для exhibits
-    public List<Exhibit> getExhibits() {
-        return exhibits;
-    }
+    public Location getLocation() { return location; }
 
-    // Сеттер для exhibits
-    public void setExhibits(List<Exhibit> exhibits) {
-        this.exhibits = exhibits;
-    }
+    public void setLocation(Location location) { this.location = location; }
+
+    public List<Exhibit> getExhibits() { return exhibits; }
+
+    public void setExhibits(List<Exhibit> exhibits) { this.exhibits = exhibits; }
 }
