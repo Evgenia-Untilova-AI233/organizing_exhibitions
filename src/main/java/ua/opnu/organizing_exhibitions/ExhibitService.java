@@ -9,7 +9,6 @@ public class ExhibitService {
 
     private final ExhibitRepository exhibitRepository;
 
-    // Використання Constructor Injection
     public ExhibitService(ExhibitRepository exhibitRepository) {
         this.exhibitRepository = exhibitRepository;
     }

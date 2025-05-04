@@ -1,6 +1,5 @@
 package ua.opnu.organizing_exhibitions;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,8 +9,12 @@ import java.util.List;
 @RequestMapping("/artists")
 public class ArtistController {
 
-    @Autowired
-    private ArtistService artistService;
+    private final ArtistService artistService;
+
+    // Constructor Injection
+    public ArtistController(ArtistService artistService) {
+        this.artistService = artistService;
+    }
 
     @PostMapping
     public ResponseEntity<Artist> addArtist(@RequestBody Artist artist) {
